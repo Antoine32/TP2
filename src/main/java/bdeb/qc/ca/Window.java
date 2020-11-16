@@ -1,19 +1,10 @@
 package bdeb.qc.ca;
 
-import org.newdawn.slick.Input;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.Sound;
 
 import java.awt.Font;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
