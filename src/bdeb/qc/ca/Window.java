@@ -94,7 +94,7 @@ public class Window extends BasicGame {
         this.container = container;
 
         this.music = new Sound(musicSoundPath); // Je sais pas pourquoi il retourne une erreur, mais il fonctionne
-        this.music.loop();
+        this.music.loop(1f, 0.5f);
 
         Sound sound = new Sound("sound/Laser_Shoot12.wav");
         sound.play();
