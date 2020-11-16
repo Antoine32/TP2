@@ -1,6 +1,5 @@
 package org.newdawn.slick.tests;
 
-import org.newdawn.slick.*;
 import org.newdawn.slick.util.Log;
 
 /**

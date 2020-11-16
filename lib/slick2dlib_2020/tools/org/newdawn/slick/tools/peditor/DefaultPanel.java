@@ -1,8 +1,7 @@
 package org.newdawn.slick.tools.peditor;
 
-import java.awt.Component;
-
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * A panel to get round the stupidity that disabling a JPanel doesn't disable

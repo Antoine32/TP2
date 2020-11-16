@@ -1,10 +1,7 @@
 package org.newdawn.slick.tools.hiero;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * A dialog to show progress of the distance map generation

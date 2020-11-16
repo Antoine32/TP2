@@ -1,18 +1,13 @@
 package org.newdawn.slick.tools.peditor;
 
+import org.newdawn.slick.particles.ConfigurableEmitter;
+
+import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-
-import org.newdawn.slick.particles.ConfigurableEmitter;
 
 /**
  * A colletion of controls for the global settings of an emitter

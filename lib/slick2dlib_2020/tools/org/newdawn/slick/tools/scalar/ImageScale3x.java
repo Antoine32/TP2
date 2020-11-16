@@ -1,9 +1,8 @@
 package org.newdawn.slick.tools.scalar;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
-import javax.imageio.ImageIO;
 
 /**
  * A utility to perform the Scale3x algorithm on a Java Image

@@ -1,9 +1,9 @@
 package org.newdawn.slick.tools.hiero.distancemap;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-
 import org.newdawn.slick.tools.hiero.ProgressListener;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * A filter to create a distance field from a source image

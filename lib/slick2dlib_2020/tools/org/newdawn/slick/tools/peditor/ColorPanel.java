@@ -1,19 +1,13 @@
 package org.newdawn.slick.tools.peditor;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.particles.ConfigurableEmitter;
-import org.newdawn.slick.particles.Particle;
 import org.newdawn.slick.particles.ConfigurableEmitter.ColorRecord;
+import org.newdawn.slick.particles.Particle;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * A panel allowing the configuration of the colour and alpha values of the 

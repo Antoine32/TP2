@@ -1,6 +1,7 @@
 package org.newdawn.slick.tools.packulike;
 
-import java.awt.Graphics;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,8 +10,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import javax.imageio.ImageIO;
 
 /**
  * A daft image packer

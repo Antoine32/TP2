@@ -1,12 +1,12 @@
 package org.newdawn.slick.tools.peditor;
 
-import java.util.HashMap;
-
 import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ConfigurableEmitter.RandomValue;
 import org.newdawn.slick.particles.ConfigurableEmitter.Range;
 import org.newdawn.slick.particles.ConfigurableEmitter.SimpleValue;
 import org.newdawn.slick.particles.ConfigurableEmitter.Value;
+
+import java.util.HashMap;
 
 /**
  * The common bits between all the different control panels. This gives a way to link controls

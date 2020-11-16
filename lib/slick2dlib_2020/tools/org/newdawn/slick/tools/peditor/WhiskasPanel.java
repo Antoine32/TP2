@@ -1,14 +1,12 @@
 package org.newdawn.slick.tools.peditor;
 
+import org.newdawn.slick.particles.ConfigurableEmitter;
+import org.newdawn.slick.particles.ConfigurableEmitter.LinearInterpolator;
+
+import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashMap;
-
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
-
-import org.newdawn.slick.particles.ConfigurableEmitter;
-import org.newdawn.slick.particles.ConfigurableEmitter.LinearInterpolator;
 
 /**
  * A panel to display the whiskas controls within pedigree GUI

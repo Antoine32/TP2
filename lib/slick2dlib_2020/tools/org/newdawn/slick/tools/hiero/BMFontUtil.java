@@ -1,9 +1,17 @@
 
 package org.newdawn.slick.tools.hiero;
 
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.Glyph;
+import org.newdawn.slick.font.GlyphPage;
+import org.newdawn.slick.imageout.ImageIOWriter;
+import org.newdawn.slick.util.Log;
+import org.newdawn.slick.util.ResourceLoader;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.font.GlyphMetrics;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -13,22 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.Glyph;
-import org.newdawn.slick.font.GlyphPage;
-import org.newdawn.slick.imageout.ImageIOWriter;
-import org.newdawn.slick.util.Log;
-import org.newdawn.slick.util.ResourceLoader;
+import java.util.*;
 
 /**
  * @author Nathan Sweet <misc@n4te.com>

@@ -1,19 +1,12 @@
 package org.newdawn.slick.tools.hiero;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import org.newdawn.slick.tools.hiero.truetype.FontData;
 import org.newdawn.slick.tools.hiero.truetype.StatusListener;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * A splash screen to show startup progress
