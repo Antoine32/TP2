@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="slick2dlib_2020">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../slick2dlib_2020/lib" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/lib/javadoc" />
+    </JAVADOC>
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/lib/slick2dlib_2020" />
+    </NATIVE>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/lib/src" />
+      <root url="file://$PROJECT_DIR$/lib/tools" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../slick2dlib_2020/lib" recursive="false" />
+  </library>
+</component>
