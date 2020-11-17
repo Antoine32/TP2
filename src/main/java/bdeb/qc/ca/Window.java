@@ -27,12 +27,12 @@ public class Window extends BasicGame {
 
     private ArrayList[] entitesLayers;
 
-    protected ArrayList<Entite> backgroundLayer = new ArrayList<>();
-    protected ArrayList<Asteroide> asteroidsLayer = new ArrayList<>();
-    protected ArrayList<Vaisseau> vaisseauxLayer = new ArrayList<>();
-    protected ArrayList<Projectile> projectilesLayer = new ArrayList<>();
-    protected ArrayList<Explosion> explosionsLayer = new ArrayList<>();
-    protected ArrayList<Entite> hudLayer = new ArrayList<>();
+    protected ArrayList<Entite> backgroundLayer = new ArrayList<Entite>();
+    protected ArrayList<Asteroide> asteroidsLayer = new ArrayList<Asteroide>();
+    protected ArrayList<Vaisseau> vaisseauxLayer = new ArrayList<Vaisseau>();
+    protected ArrayList<Projectile> projectilesLayer = new ArrayList<Projectile>();
+    protected ArrayList<Explosion> explosionsLayer = new ArrayList<Explosion>();
+    protected ArrayList<Entite> hudLayer = new ArrayList<Entite>();
 
     private static final int BACKGROUND_LAYER = 0;
     private static final int ASTEROIDS_LAYER = 1;
@@ -152,7 +152,6 @@ public class Window extends BasicGame {
         return (int) ((float) temps / ((float) container.getWidth() / (float) container.getHeight()));
     }
 
-    @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
         for (List<Entite> entites : entitesLayers) {
             for (Entite entite : entites) {

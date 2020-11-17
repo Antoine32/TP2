@@ -13,7 +13,7 @@ public class Planet extends Entite implements Cloneable, Receiver {
 
     protected int quantiterSurPlanete = 0;
 
-    protected ArrayList<Integer> possibiliter = new ArrayList<>();
+    protected ArrayList<Integer> possibiliter = new ArrayList<Integer>();
 
     protected int scaleX;
     protected int scaleY;
@@ -79,7 +79,6 @@ public class Planet extends Entite implements Cloneable, Receiver {
         return quantiterSurPlanete;
     }
 
-    @Override
     public void send(int packet) {
         this.quantiterSurPlanete += packet;
 
