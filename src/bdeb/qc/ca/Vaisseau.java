@@ -161,6 +161,8 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         vaisseau.moi = false;
         vaisseau.hide = true;
 
+        vaisseau.vieList = new ArrayList<>();
+
         vaisseau.controle = new Controle(null, vaisseau) {
             @Override
             boolean Up(float delta) {
