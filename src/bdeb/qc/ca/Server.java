@@ -23,9 +23,6 @@ public class Server extends Thread {
                     socket.receive(request);
 
                     Queue<Float> tab = this.concurrentLinkedQueueServer.poll();
-                    while (!this.concurrentLinkedQueueServer.isEmpty()) {
-                        tab = this.concurrentLinkedQueueServer.poll();
-                    }
 
                     StringBuilder msg = new StringBuilder();
 
