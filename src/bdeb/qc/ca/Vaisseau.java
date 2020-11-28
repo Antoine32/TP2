@@ -43,6 +43,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
     protected boolean asShot = false;
     protected int asSent = 0;
+    protected int asPerdVie = 0;
 
     protected boolean moi = true;
 
@@ -216,6 +217,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 this.vie--;
                 this.vieList.get(this.vie).setHide(true);
                 this.vitesse.y = 100.0f;
+                this.asPerdVie++;
             }
 
             if (!this.isActive()) {
@@ -485,8 +487,10 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
         tab.add(this.asShot);
         tab.add(this.asSent);
+        tab.add(this.asPerdVie);
 
         this.asShot = false;
+        this.asPerdVie = 0;
         this.asSent = 0;
 
         while (!ancienEntite.isEmpty()) {
@@ -532,6 +536,12 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 this.cooldownCargaison.setDoneTrue();
                 this.quantiterDansVaisseau = quantiter;
                 this.lauchCargaison();
+            }
+
+            int viePerdue = Integer.parseInt(tab.poll());
+            while (viePerdue > 0) {
+                this.perdVie();
+                viePerdue--;
             }
 
             boolean rajoute = false;
