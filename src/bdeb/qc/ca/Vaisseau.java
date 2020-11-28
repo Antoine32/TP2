@@ -546,6 +546,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                             if (asteroide.getUuid().compareTo(uuid) == 0) {
                                 System.out.println("asteroide: " + uuid);
                                 asteroide.setDetruire(true);
+                                asteroide.triggerExplosion();
                                 break;
                             }
                         }
