@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 import static bdeb.qc.ca.Window.random;
+import static bdeb.qc.ca.Window.scl;
 
 public class Asteroide extends ComplexeEntitie implements Cloneable {
     protected ArrayList<Projectile> projectilesList;
@@ -17,6 +18,9 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
 
     public Asteroide(float x, float y, int width, int height, String imgPath, int amountImg, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList, ArrayList<Projectile> projectilesList, ArrayList<Asteroide> asteroideList, Queue<Float> nouveauAsteroide) {
         super(x, y, width, height, imgPath, amountImg, explosionBlueprint, explosionsList);
+
+        this.resize((int) (width * scl), (int) (height * scl));
+
         this.setDeleteOnOutOfFrame(true);
         this.setVitesseMin(0.00f, 0.10f);
         this.setVitesseMax(0.15f, 0.25f);
@@ -87,8 +91,8 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
     }
 
     public void toNouveau() {
-        nouveauAsteroide.add(this.getPositionX());
-        nouveauAsteroide.add(this.getPositionY());
+        nouveauAsteroide.add(this.getPositionX() / scl);
+        nouveauAsteroide.add(this.getPositionY() / scl);
         nouveauAsteroide.add(this.getVitesseX());
         nouveauAsteroide.add(this.getVitesseY());
         nouveauAsteroide.add(this.getMultRotation());

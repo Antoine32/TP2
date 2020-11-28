@@ -48,6 +48,8 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
     public Vaisseau(String imgPath, GameContainer container, Exhaust exhaust, Projectile projectileBLueprint, Projectile cargaisonBLueprint, Explosion explosionBlueprint, Asteroide asteroideBlueprint, ArrayList<Projectile> projectilesList, ArrayList<Entite> backgroundList, ArrayList<Explosion> explosionsList, ArrayList<Asteroide> asteroidesList, ArrayList<Entite> hudList, Sound sonExplose) {
         super(0, 0, 128, 128, imgPath, 5, explosionBlueprint, explosionsList);
 
+        this.resize((int) (128 * scl), (int) (128 * scl));
+
         this.hide = true;
 
         this.setVitesseMax(1f, 1f);
@@ -461,8 +463,9 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
     public void getComunicationInfo(ConcurrentLinkedQueue<Queue<Float>> concurrentLinkedQueueServer, Queue<Float> nouveauAsteroide) {
         Queue<Float> tab = new LinkedBlockingQueue<>();
-        tab.add(this.getPositionX());
-        tab.add(this.getPositionY());
+
+        tab.add(this.getPositionX() / scl);
+        tab.add(this.getPositionY() / scl);
 
         tab.add(this.getVitesseX());
         tab.add(this.getVitesseY());
@@ -492,7 +495,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         }
 
         if (tab != null) {
-            this.setPosition(tab.poll(), tab.poll());
+            this.setPosition(tab.poll() * scl, tab.poll() * scl);
 
             this.setVitesse(tab.poll(), tab.poll());
 
@@ -518,7 +521,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
             while (!tab.isEmpty()) {
                 Asteroide asteroide = asteroideBlueprint.clone();
-                asteroide.setPosition(tab.poll(), tab.poll());
+                asteroide.setPosition(tab.poll() * scl, tab.poll() * scl);
                 asteroide.setVitesse(tab.poll(), tab.poll());
                 asteroide.setMultRotation(tab.poll());
                 asteroide.setScale(tab.poll());

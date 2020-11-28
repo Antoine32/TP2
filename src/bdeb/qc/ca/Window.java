@@ -96,12 +96,15 @@ public class Window extends BasicGame {
     private boolean communication = false;
     private boolean communicationSlave = false;
 
-    public static String address = "127.0.0.1";
+    private String address;
 
     private boolean playing = false;
 
-    public Window() {
+    public static float scl;
+
+    public Window(String address) {
         super("TP2");
+        this.address = address;
     }
 
     @Override
@@ -110,6 +113,8 @@ public class Window extends BasicGame {
         container.setShowFPS(false);
         container.setVSync(true);
         container.setAlwaysRender(true);
+
+        scl = container.getHeight() / 900f;
 
         this.queueVaisseauServer = new ConcurrentLinkedQueue<Queue<Float>>();
         this.queueVaisseauClient = new ConcurrentLinkedQueue<Queue<Float>>();
@@ -387,6 +392,8 @@ public class Window extends BasicGame {
     }
 
     public static void main(String[] args) throws SlickException {
+        String address = "127.0.0.1";
+
         int width = 1600;
         int height = 900;
         boolean fullscreen = false;
@@ -407,6 +414,6 @@ public class Window extends BasicGame {
             fullscreen = args[3].contentEquals("true");
         }
 
-        new AppGameContainer(new Window(), width, height, fullscreen).start();
+        new AppGameContainer(new Window(address), width, height, fullscreen).start();
     }
 }
