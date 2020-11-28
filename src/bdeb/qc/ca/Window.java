@@ -192,7 +192,7 @@ public class Window extends BasicGame {
         }
 
         {
-            Vector2f pos = new Vector2f(container.getWidth() - this.healthIndicatorBlueprint.getWidth() * 2.0f,
+            Vector2f pos = new Vector2f(this.healthIndicatorBlueprint.getWidth() * 0.5f,
                     container.getHeight() - this.healthIndicatorBlueprint.getHeight() * 0.5f);
 
             for (int i = 0; i < this.vaisseau.vie; i++) {
