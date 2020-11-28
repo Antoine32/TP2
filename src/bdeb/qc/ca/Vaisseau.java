@@ -538,7 +538,8 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
             int viePerdue = Integer.parseInt(tab.poll());
             while (viePerdue > 0) {
-                this.perdVie();
+                this.vie--;
+                this.vieList.get(this.vie).setHide(true);
                 viePerdue--;
             }
 
