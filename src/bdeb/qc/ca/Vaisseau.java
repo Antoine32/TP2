@@ -131,21 +131,19 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
     }
 
     public void reset(GameContainer container) {
-        if (this.isHide()) {
-            for (this.vie = 0; this.vie < 3; this.vie++) {
-                this.vieList.get(this.vie).setHide(false);
-            }
-
-            this.setPosition(container.getWidth(), container.getHeight() / 2);
-            this.cooldownInactif.setDoneTrue();
-            this.cooldownImmuniter.setDoneTrue();
-            this.cooldownCargaison.setDoneTrue();
-            this.cooldownProjectile.setDoneTrue();
-            this.quantiterDansVaisseau = 0;
-            this.setHide(false);
-            this.enAnimation = true;
-            this.setVitesse(-this.vitesseMax.getX(), 0);
+        for (this.vie = 0; this.vie < 3; this.vie++) {
+            this.vieList.get(this.vie).setHide(false);
         }
+
+        this.setPosition(container.getWidth(), container.getHeight() / 2);
+        this.cooldownInactif.setDoneTrue();
+        this.cooldownImmuniter.setDoneTrue();
+        this.cooldownCargaison.setDoneTrue();
+        this.cooldownProjectile.setDoneTrue();
+        this.quantiterDansVaisseau = 0;
+        this.setHide(false);
+        this.enAnimation = true;
+        this.setVitesse(-this.vitesseMax.getX(), 0);
     }
 
     @Override

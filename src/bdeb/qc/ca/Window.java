@@ -360,7 +360,6 @@ public class Window extends BasicGame {
                 break;
             case Input.KEY_MINUS:
                 if (!communication) {
-
                     try {
                         this.vaisseauxLayer.add(this.vaisseauB);
 
