@@ -224,7 +224,7 @@ public abstract class Entite implements Cloneable {
     }
 
     public void setHide(boolean hide) {
-        if (hide) {
+        if (!this.hide && hide) {
             this.lastAction();
         }
         this.hide = hide;

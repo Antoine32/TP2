@@ -516,11 +516,11 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
             this.setScale(Float.parseFloat(tab.poll()));
 
-            boolean hide = Boolean.parseBoolean(tab.poll());
+            boolean hiding = Boolean.parseBoolean(tab.poll());
 
-            if (hide && !this.isHide()) {
+            if (hiding && !this.isHide()) {
                 this.setHide(true);
-            } else if (!hide && this.isHide()) {
+            } else if (!hiding && this.isHide()) {
                 this.setHide(false);
             }
 
