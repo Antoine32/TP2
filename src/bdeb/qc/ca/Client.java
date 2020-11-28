@@ -11,9 +11,9 @@ public class Client extends Thread {
     private int port;
     private InetAddress address;
 
-    private ConcurrentLinkedQueue<Queue<Float>> concurrentLinkedQueueClient;
+    private ConcurrentLinkedQueue<Queue<String>> concurrentLinkedQueueClient;
 
-    Client(int port, String address, ConcurrentLinkedQueue<Queue<Float>> concurrentLinkedQueueClient) throws SocketException {
+    Client(int port, String address, ConcurrentLinkedQueue<Queue<String>> concurrentLinkedQueueClient) throws SocketException {
         this.socket = new DatagramSocket();
         this.socket.setSoTimeout(1000);
         this.port = port;
@@ -46,10 +46,10 @@ public class Client extends Thread {
                 String msg = new String(buffer, 0, response.getLength());
 
                 String[] tabStr = msg.split(" ");
-                Queue<Float> tab = new LinkedBlockingQueue<>();
+                Queue<String> tab = new LinkedBlockingQueue<>();
 
                 for (String str : tabStr) {
-                    tab.add(Float.parseFloat(str));
+                    tab.add(str);
                 }
 
                 this.concurrentLinkedQueueClient.add(tab);

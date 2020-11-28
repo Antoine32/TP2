@@ -88,10 +88,10 @@ public class Window extends BasicGame {
     private Server server;
     private Client client;
 
-    private ConcurrentLinkedQueue<Queue<Float>> queueVaisseauServer;
-    private ConcurrentLinkedQueue<Queue<Float>> queueVaisseauClient;
+    private ConcurrentLinkedQueue<Queue<Object>> queueVaisseauServer;
+    private ConcurrentLinkedQueue<Queue<String>> queueVaisseauClient;
 
-    private Queue<Float> nouveauAsteroide;
+    private Queue<Object> nouveauAsteroide;
 
     private boolean communication = false;
     private boolean communicationSlave = false;
@@ -116,10 +116,10 @@ public class Window extends BasicGame {
 
         scl = container.getHeight() / 900f;
 
-        this.queueVaisseauServer = new ConcurrentLinkedQueue<Queue<Float>>();
-        this.queueVaisseauClient = new ConcurrentLinkedQueue<Queue<Float>>();
+        this.queueVaisseauServer = new ConcurrentLinkedQueue<Queue<Object>>();
+        this.queueVaisseauClient = new ConcurrentLinkedQueue<Queue<String>>();
 
-        this.nouveauAsteroide = new LinkedBlockingQueue<Float>();
+        this.nouveauAsteroide = new LinkedBlockingQueue<Object>();
 
         this.music = new Sound(musicSoundPath); // Je sais pas pourquoi il retourne une erreur, mais il fonctionne
         this.music.loop(1f, 0.5f);

@@ -459,8 +459,8 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         return this.cooldownCargaison.getTimeLeft();
     }
 
-    public void getComunicationInfo(ConcurrentLinkedQueue<Queue<Float>> concurrentLinkedQueueServer, Queue<Float> nouveauAsteroide) {
-        Queue<Float> tab = new LinkedBlockingQueue<>();
+    public void getComunicationInfo(ConcurrentLinkedQueue<Queue<Object>> concurrentLinkedQueueServer, Queue<Object> nouveauAsteroide) {
+        Queue<Object> tab = new LinkedBlockingQueue<>();
 
         tab.add(this.getPositionX() / scl);
         tab.add(this.getPositionY() / scl);
@@ -470,10 +470,10 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
         tab.add(this.getScale());
 
-        tab.add(this.isHide() ? 1f : 0f);
+        tab.add(this.isHide());
 
-        tab.add(this.asShot ? 1f : 0f);
-        tab.add(this.asSent ? 1f : 0f);
+        tab.add(this.asShot);
+        tab.add(this.asSent);
 
         this.asShot = false;
         this.asSent = false;
@@ -485,17 +485,17 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         concurrentLinkedQueueServer.add(tab);
     }
 
-    public void setComunicationInfo(ConcurrentLinkedQueue<Queue<Float>> concurrentLinkedQueueClient) {
+    public void setComunicationInfo(ConcurrentLinkedQueue<Queue<String>> concurrentLinkedQueueClient) {
         while (!concurrentLinkedQueueClient.isEmpty()) {
-            Queue<Float> tab = concurrentLinkedQueueClient.poll();
+            Queue<String> tab = concurrentLinkedQueueClient.poll();
 
-            this.setPosition(tab.poll() * scl, tab.poll() * scl);
+            this.setPosition(Float.parseFloat(tab.poll()) * scl, Float.parseFloat(tab.poll()) * scl);
 
-            this.setVitesse(tab.poll(), tab.poll());
+            this.setVitesse(Float.parseFloat(tab.poll()), Float.parseFloat(tab.poll()));
 
-            this.setScale(tab.poll());
+            this.setScale(Float.parseFloat(tab.poll()));
 
-            boolean hide = tab.poll() == 1f;
+            boolean hide = Boolean.parseBoolean(tab.poll());
 
             if (hide && !this.isHide()) {
                 this.setHide(true);
@@ -503,23 +503,23 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 this.setHide(false);
             }
 
-            if (tab.poll() == 1f) {
+            if (Boolean.parseBoolean(tab.poll())) {
                 this.cooldownProjectile.setDoneTrue();
                 this.lauchProjectile();
             }
 
-            if (tab.poll() == 1f) {
+            if (Boolean.parseBoolean(tab.poll())) {
                 this.cooldownCargaison.setDoneTrue();
                 this.lauchCargaison();
             }
 
             while (!tab.isEmpty()) {
                 Asteroide asteroide = asteroideBlueprint.clone();
-                asteroide.setPosition(tab.poll() * scl, tab.poll() * scl);
-                asteroide.setVitesse(tab.poll(), tab.poll());
-                asteroide.setMultRotation(tab.poll());
-                asteroide.setScale(tab.poll());
-                asteroide.setFrame((int) (tab.poll() + 0));
+                asteroide.setPosition(Float.parseFloat(tab.poll()) * scl, Float.parseFloat(tab.poll()) * scl);
+                asteroide.setVitesse(Float.parseFloat(tab.poll()), Float.parseFloat(tab.poll()));
+                asteroide.setMultRotation(Float.parseFloat(tab.poll()));
+                asteroide.setScale(Float.parseFloat(tab.poll()));
+                asteroide.setFrame(Integer.parseInt(tab.poll()));
                 this.asteroidesList.add(asteroide);
             }
         }
