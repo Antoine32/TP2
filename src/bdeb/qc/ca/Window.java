@@ -404,7 +404,7 @@ public class Window extends BasicGame {
         }
 
         if (args.length > 3) {
-            fullscreen = args[1].contentEquals("true");
+            fullscreen = args[3].contentEquals("true");
         }
 
         new AppGameContainer(new Window(), width, height, fullscreen).start();
