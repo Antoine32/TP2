@@ -129,7 +129,7 @@ public class Projectile extends ComplexeEntitie implements Cloneable {
 
     @Override
     public void lastAction() {
-        if (this.lastTarget == null) {
+        if (this.lastTarget == null || !this.moi) {
             this.lastTarget = this;
         }
 
