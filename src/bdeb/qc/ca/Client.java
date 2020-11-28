@@ -32,7 +32,7 @@ public class Client extends Thread {
             socket.connect(address, port);
         } while (!socket.isConnected());
 
-        System.out.println("a");
+        System.out.println("connected to : " + this.address);
 
         while (true) {
             try {
