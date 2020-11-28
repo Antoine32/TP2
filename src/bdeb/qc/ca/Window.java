@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -91,6 +92,7 @@ public class Window extends BasicGame {
     private ConcurrentLinkedQueue<Queue<Object>> queueVaisseauServer;
     private ConcurrentLinkedQueue<Queue<String>> queueVaisseauClient;
 
+    private Queue<UUID> ancienEntite;
     private Queue<Object> nouveauAsteroide;
 
     private boolean communication = false;
@@ -119,6 +121,7 @@ public class Window extends BasicGame {
         this.queueVaisseauServer = new ConcurrentLinkedQueue<Queue<Object>>();
         this.queueVaisseauClient = new ConcurrentLinkedQueue<Queue<String>>();
 
+        this.ancienEntite = new LinkedBlockingQueue<UUID>();
         this.nouveauAsteroide = new LinkedBlockingQueue<Object>();
 
         this.music = new Sound(musicSoundPath); // Je sais pas pourquoi il retourne une erreur, mais il fonctionne
@@ -160,7 +163,7 @@ public class Window extends BasicGame {
         this.cargaisonBlueprint.resize(52, 52);
 
         this.asteroideBlueprint = new Asteroide(0, 0, 256, 256, asteroidImgPath, 4, this.explosionBlueprint,
-                this.explosionsLayer, this.projectilesLayer, this.asteroidsLayer, this.nouveauAsteroide);
+                this.explosionsLayer, this.projectilesLayer, this.asteroidsLayer, this.ancienEntite, this.nouveauAsteroide);
 
         this.vaisseau = new Vaisseau(vaisseauImgPath, container, this.exhaustBlueprint, this.projectileBlueprint,
                 this.cargaisonBlueprint, this.explosionBlueprint, this.asteroideBlueprint, this.projectilesLayer,
@@ -272,7 +275,7 @@ public class Window extends BasicGame {
             this.vaisseauB.setComunicationInfo(queueVaisseauClient);
 
             if (queueVaisseauServer.isEmpty()) {
-                this.vaisseau.getComunicationInfo(queueVaisseauServer, nouveauAsteroide);
+                this.vaisseau.getComunicationInfo(queueVaisseauServer, ancienEntite, nouveauAsteroide);
             }
         }
 

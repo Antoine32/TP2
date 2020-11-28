@@ -13,14 +13,14 @@ import static bdeb.qc.ca.Window.scl;
 public class Asteroide extends ComplexeEntitie implements Cloneable {
     protected ArrayList<Projectile> projectilesList;
     protected ArrayList<Asteroide> asteroideList;
+
     protected Queue<Object> nouveauAsteroide;
+    protected Queue<UUID> ancienEntite;
 
     protected boolean split = false;
     protected float multRotation = 1f;
 
-    protected UUID uuid;
-
-    public Asteroide(float x, float y, int width, int height, String imgPath, int amountImg, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList, ArrayList<Projectile> projectilesList, ArrayList<Asteroide> asteroideList, Queue<Object> nouveauAsteroide) {
+    public Asteroide(float x, float y, int width, int height, String imgPath, int amountImg, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList, ArrayList<Projectile> projectilesList, ArrayList<Asteroide> asteroideList, Queue<UUID> ancienEntite, Queue<Object> nouveauAsteroide) {
         super(x, y, width, height, imgPath, amountImg, explosionBlueprint, explosionsList);
 
         this.resize((int) (width * scl), (int) (height * scl));
@@ -31,6 +31,8 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
 
         this.projectilesList = projectilesList;
         this.asteroideList = asteroideList;
+
+        this.ancienEntite = ancienEntite;
         this.nouveauAsteroide = nouveauAsteroide;
     }
 
@@ -39,8 +41,6 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
         Asteroide asteroide = (Asteroide) super.clone();
         asteroide.multRotation = 1f;
         asteroide.split = false;
-
-        asteroide.uuid = UUID.randomUUID();
 
         return asteroide;
     }
@@ -69,9 +69,11 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
 
         if (!this.isDetruire()) {
             for (Projectile projectile : projectilesList) {
-                if (!projectile.isDetruire() && projectile.detectCollision(this)) {
-                    this.setSplit(projectile.isMoi());
+                if (!projectile.isDetruire() && projectile.isMoi() && projectile.detectCollision(this)) {
+                    this.setSplit(true);
                     this.setDetruire(true);
+                    this.ancienEntite.add(this.getUuid());
+                    this.ancienEntite.add(projectile.getUuid());
                     projectile.setDetruire(true);
                     break;
                 }
@@ -81,9 +83,6 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
 
     @Override
     public void lastAction() {
-        //nouveauAsteroide.add(this.uuid);
-        //nouveauAsteroide.add(this.uuid);
-
         if (this.isSplit() && Math.min(this.width, this.height) > 1) {
             Asteroide residue1 = this.clone().setNewRandom();
             residue1.setPosition(residue1.getPositionX() + (residue1.getWidth() / 2), Math.max(residue1.getPositionY(), 0));
@@ -111,10 +110,6 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
 
     public boolean isSplit() {
         return split;
-    }
-
-    public UUID getUuid() {
-        return this.uuid;
     }
 
     public float getMultRotation() {

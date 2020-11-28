@@ -7,6 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 import java.util.Queue;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -459,7 +460,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         return this.cooldownCargaison.getTimeLeft();
     }
 
-    public void getComunicationInfo(ConcurrentLinkedQueue<Queue<Object>> concurrentLinkedQueueServer, Queue<Object> nouveauAsteroide) {
+    public void getComunicationInfo(ConcurrentLinkedQueue<Queue<Object>> concurrentLinkedQueueServer, Queue<UUID> ancienEntite, Queue<Object> nouveauAsteroide) {
         Queue<Object> tab = new LinkedBlockingQueue<>();
 
         tab.add(this.getPositionX() / scl);
@@ -477,6 +478,12 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
         this.asShot = false;
         this.asSent = false;
+
+        while (!ancienEntite.isEmpty()) {
+            tab.add(ancienEntite.poll());
+        }
+
+        tab.add("rajoute");
 
         while (!nouveauAsteroide.isEmpty()) {
             tab.add(nouveauAsteroide.poll());
@@ -513,14 +520,44 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 this.lauchCargaison();
             }
 
-            while (!tab.isEmpty()) {
-                Asteroide asteroide = asteroideBlueprint.clone();
-                asteroide.setPosition(Float.parseFloat(tab.poll()) * scl, Float.parseFloat(tab.poll()) * scl);
-                asteroide.setVitesse(Float.parseFloat(tab.poll()), Float.parseFloat(tab.poll()));
-                asteroide.setMultRotation(Float.parseFloat(tab.poll()));
-                asteroide.setScale(Float.parseFloat(tab.poll()));
-                asteroide.setFrame(Integer.parseInt(tab.poll()));
-                this.asteroidesList.add(asteroide);
+            boolean rajoute = false;
+            String str;
+
+            while ((str = tab.poll()) != null) {
+                if (rajoute) {
+                    Asteroide asteroide = asteroideBlueprint.clone();
+                    asteroide.setPosition(Float.parseFloat(tab.poll()) * scl, Float.parseFloat(tab.poll()) * scl);
+                    asteroide.setVitesse(Float.parseFloat(tab.poll()), Float.parseFloat(tab.poll()));
+                    asteroide.setMultRotation(Float.parseFloat(tab.poll()));
+                    asteroide.setScale(Float.parseFloat(tab.poll()));
+                    asteroide.setFrame(Integer.parseInt(tab.poll()));
+                    this.asteroidesList.add(asteroide);
+                } else {
+                    if (str.contentEquals("rajoute")) {
+                        rajoute = true;
+                    } else {
+                        UUID uuid = UUID.fromString(str);
+                        boolean found = false;
+
+                        for (Asteroide asteroide : asteroidesList) {
+                            if (asteroide.getUuid().compareTo(uuid) == 0) {
+                                asteroide.setDetruire(true);
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            for (Projectile projectile : projectilesList) {
+                                if (projectile.getUuid().compareTo(uuid) == 0) {
+                                    projectile.setDetruire(true);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 

@@ -3,6 +3,7 @@ package bdeb.qc.ca;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ComplexeEntitie extends Entite implements Cloneable {
     protected Explosion explosionBlueprint;
@@ -10,15 +11,21 @@ public class ComplexeEntitie extends Entite implements Cloneable {
 
     protected float collisionScale = 1f;
 
+    protected UUID uuid;
+
     public ComplexeEntitie(float x, float y, int width, int height, String imgPath, int amountImg, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList) {
         super(x, y, width, height, imgPath, amountImg);
         this.explosionBlueprint = explosionBlueprint;
         this.explosionsList = explosionsList;
+
+        this.uuid = UUID.randomUUID();
     }
 
     @Override
     public ComplexeEntitie clone() {
         ComplexeEntitie complexeEntitie = (ComplexeEntitie) super.clone();
+        complexeEntitie.uuid = UUID.randomUUID();
+
         return complexeEntitie;
     }
 
@@ -37,6 +44,10 @@ public class ComplexeEntitie extends Entite implements Cloneable {
         float minimumSquared = minimum * minimum;
 
         return distance.lengthSquared() < minimumSquared;
+    }
+
+    public UUID getUuid() {
+        return this.uuid;
     }
 
     public float getCollisionScale() {
