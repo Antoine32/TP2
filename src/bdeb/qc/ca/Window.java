@@ -375,6 +375,11 @@ public class Window extends BasicGame {
             address = args[0];
         }
 
-        new AppGameContainer(new Window(), 900, 900, false).start();
+        boolean fullscreen = false;
+        if (args.length > 1) {
+            fullscreen = args[1].contentEquals("true");
+        }
+
+        new AppGameContainer(new Window(), 1600, 900, fullscreen).start();
     }
 }
