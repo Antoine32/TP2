@@ -434,6 +434,10 @@ public class Window extends BasicGame {
             fullscreen = args[3].contentEquals("true");
         }
 
+        if (args.length > 4) {
+            controleSouris = args[4].contentEquals("true");
+        }
+
         new AppGameContainer(new Window(address), width, height, fullscreen).start();
     }
 }
