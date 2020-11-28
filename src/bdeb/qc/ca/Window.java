@@ -247,17 +247,18 @@ public class Window extends BasicGame {
             this.restart();
         }
 
-        if (!communicationSlave && !this.vaisseau.isEnAnimation() && this.cooldownAsteroide.isDone()) {
+        if (this.cooldownAsteroide.isDone()) {
             if (playing) {
-                this.cooldownAsteroide.setDelaie(adapteCooldownToSize(1500));
-                Asteroide asteroide = asteroideBlueprint.clone().setNewRandom();
-                asteroide.setPosition(
-                        random.nextFloat() * (container.getWidth() - asteroide.getWidth()) + (asteroide.getWidth() / 2),
-                        -(asteroide.getHeight() / 2) + 1);
-                this.asteroidsLayer.add(asteroide);
+                if (!communicationSlave && !this.vaisseau.isEnAnimation()) {
+                    this.cooldownAsteroide.setDelaie(adapteCooldownToSize(1500));
+                    Asteroide asteroide = asteroideBlueprint.clone().setNewRandom();
+                    asteroide.setPosition(random.nextFloat() * (container.getWidth() - asteroide.getWidth())
+                            + (asteroide.getWidth() / 2), -(asteroide.getHeight() / 2) + 1);
+                    this.asteroidsLayer.add(asteroide);
 
-                if (communication) {
-                    asteroide.toNouveau();
+                    if (communication) {
+                        asteroide.toNouveau();
+                    }
                 }
             } else if (this.asteroidsLayer.size() > 0) {
                 this.cooldownAsteroide.setDelaie(adapteCooldownToSize(250));
