@@ -95,7 +95,7 @@ public class Window extends BasicGame {
     private Queue<UUID> ancienEntite;
     private Queue<Object> nouveauAsteroide;
 
-    private boolean communication = false;
+    public static boolean communication = false;
     private boolean communicationSlave = false;
 
     private String address;

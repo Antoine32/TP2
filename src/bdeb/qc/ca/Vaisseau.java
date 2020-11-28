@@ -41,7 +41,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
     protected Controle controle;
 
-    protected boolean asShot = false;
+    protected int asShot = 0;
     protected int asSent = 0;
     protected int asPerdVie = 0;
 
@@ -251,7 +251,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
             this.projectilesList.add(newProjectile);
 
             if (this.moi) {
-                asShot = true;
+                asShot++;
             }
         }
     }
@@ -487,7 +487,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         tab.add(this.asSent);
         tab.add(this.asPerdVie);
 
-        this.asShot = false;
+        this.asShot = 0;
         this.asPerdVie = 0;
         this.asSent = 0;
 
@@ -524,9 +524,11 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 this.setHide(false);
             }
 
-            if (Boolean.parseBoolean(tab.poll())) {
+            int tires = Integer.parseInt(tab.poll());
+            while (tires > 0) {
                 this.cooldownProjectile.setDoneTrue();
                 this.lauchProjectile();
+                tires--;
             }
 
             int quantiter = Integer.parseInt(tab.poll());

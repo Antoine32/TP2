@@ -7,8 +7,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.UUID;
 
-import static bdeb.qc.ca.Window.random;
-import static bdeb.qc.ca.Window.scl;
+import static bdeb.qc.ca.Window.*;
 
 public class Asteroide extends ComplexeEntitie implements Cloneable {
     protected ArrayList<Projectile> projectilesList;
@@ -73,7 +72,9 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
                     if (projectile.isMoi()) {
                         this.setSplit(true);
                         this.setDetruire(true);
-                        this.ancienEntite.add(this.getUuid());
+                        if (communication) {
+                            this.ancienEntite.add(this.getUuid());
+                        }
                     }
                     projectile.setDetruire(true);
                     break;
@@ -100,14 +101,16 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
     }
 
     public void toNouveau() {
-        nouveauAsteroide.add(this.getPositionX() / scl);
-        nouveauAsteroide.add(this.getPositionY() / scl);
-        nouveauAsteroide.add(this.getVitesseX());
-        nouveauAsteroide.add(this.getVitesseY());
-        nouveauAsteroide.add(this.getMultRotation());
-        nouveauAsteroide.add(this.getScale());
-        nouveauAsteroide.add(this.getFrame());
-        nouveauAsteroide.add(this.getUuid());
+        if (communication) {
+            nouveauAsteroide.add(this.getPositionX() / scl);
+            nouveauAsteroide.add(this.getPositionY() / scl);
+            nouveauAsteroide.add(this.getVitesseX());
+            nouveauAsteroide.add(this.getVitesseY());
+            nouveauAsteroide.add(this.getMultRotation());
+            nouveauAsteroide.add(this.getScale());
+            nouveauAsteroide.add(this.getFrame());
+            nouveauAsteroide.add(this.getUuid());
+        }
     }
 
     public boolean isSplit() {
