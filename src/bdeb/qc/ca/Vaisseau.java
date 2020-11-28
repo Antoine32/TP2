@@ -42,7 +42,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
     protected Controle controle;
 
     protected boolean asShot = false;
-    protected boolean asSent = false;
+    protected int asSent = 0;
 
     protected boolean moi = true;
 
@@ -249,7 +249,10 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
             newProjectile.joueSonDebut();
             newProjectile.setMoi(this.moi);
             this.projectilesList.add(newProjectile);
-            asShot = true;
+
+            if (this.moi) {
+                asShot = true;
+            }
         }
     }
 
@@ -263,7 +266,9 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
             newCargaison.joueSonDebut();
             this.backgroundList.add(newCargaison);
-            asSent = true;
+            if (this.moi) {
+                asSent = newCargaison.getValeurTransmise();
+            }
         }
     }
 
@@ -477,7 +482,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         tab.add(this.asSent);
 
         this.asShot = false;
-        this.asSent = false;
+        this.asSent = 0;
 
         while (!ancienEntite.isEmpty()) {
             String uuid = ancienEntite.poll().toString();
@@ -517,8 +522,10 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 this.lauchProjectile();
             }
 
-            if (Boolean.parseBoolean(tab.poll())) {
+            int quantiter = Integer.parseInt(tab.poll());
+            if (quantiter > 0) {
                 this.cooldownCargaison.setDoneTrue();
+                this.quantiterDansVaisseau = quantiter;
                 this.lauchCargaison();
             }
 
@@ -554,7 +561,6 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 }
             }
         }
-
     }
 
     @Override
