@@ -52,8 +52,6 @@ public class Client extends Thread {
                     tab.add(Float.parseFloat(str));
                 }
 
-                System.out.println("ping: " + (System.currentTimeMillis() - tab.poll()));
-
                 this.concurrentLinkedQueueClient.add(tab);
             } catch (SocketTimeoutException e) {
             } catch (IOException e) {

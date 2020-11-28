@@ -25,7 +25,6 @@ public class Server extends Thread {
                     Queue<Float> tab = this.concurrentLinkedQueueServer.poll();
 
                     StringBuilder msg = new StringBuilder();
-                    msg.append(System.currentTimeMillis()).append(" ");
 
                     while (!tab.isEmpty()) {
                         msg.append(tab.poll()).append(" ");

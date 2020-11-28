@@ -485,7 +485,11 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
     }
 
     public void setComunicationInfo(ConcurrentLinkedQueue<Queue<Float>> concurrentLinkedQueueClient) {
-        Queue<Float> tab = concurrentLinkedQueueClient.poll();
+        Queue<Float> tab = null;
+
+        while (!concurrentLinkedQueueClient.isEmpty()) {
+            tab = concurrentLinkedQueueClient.poll();
+        }
 
         if (tab != null) {
             this.setPosition(tab.poll(), tab.poll());
@@ -522,6 +526,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 this.asteroidesList.add(asteroide);
             }
         }
+
     }
 
     @Override
