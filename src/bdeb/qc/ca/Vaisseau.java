@@ -21,7 +21,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
     protected ArrayList<Projectile> projectilesList;
     protected ArrayList<Entite> backgroundList;
     protected ArrayList<Asteroide> asteroidesList;
-    protected ArrayList<Entite> hudList;
+    protected ArrayList<Indicator> vieList;
 
     protected Cooldown cooldownProjectile;
     protected Cooldown cooldownCargaison;
@@ -46,7 +46,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
     protected boolean moi = true;
 
-    public Vaisseau(String imgPath, GameContainer container, Exhaust exhaust, Projectile projectileBLueprint, Projectile cargaisonBLueprint, Explosion explosionBlueprint, Asteroide asteroideBlueprint, ArrayList<Projectile> projectilesList, ArrayList<Entite> backgroundList, ArrayList<Explosion> explosionsList, ArrayList<Asteroide> asteroidesList, ArrayList<Entite> hudList, Sound sonExplose) {
+    public Vaisseau(String imgPath, GameContainer container, Exhaust exhaust, Projectile projectileBLueprint, Projectile cargaisonBLueprint, Explosion explosionBlueprint, Asteroide asteroideBlueprint, ArrayList<Projectile> projectilesList, ArrayList<Entite> backgroundList, ArrayList<Explosion> explosionsList, ArrayList<Asteroide> asteroidesList, Sound sonExplose) {
         super(0, 0, 128, 128, imgPath, 5, explosionBlueprint, explosionsList);
 
         this.resize((int) (128 * scl), (int) (128 * scl));
@@ -60,7 +60,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         this.projectilesList = projectilesList;
         this.backgroundList = backgroundList;
         this.asteroidesList = asteroidesList;
-        this.hudList = hudList;
+        this.vieList = new ArrayList<Indicator>();
 
         this.cooldownProjectile = new Cooldown(333);
         this.cooldownCargaison = new Cooldown(10000);
@@ -132,7 +132,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
     public void reset(GameContainer container) {
         if (this.isHide()) {
             for (this.vie = 0; this.vie < 3; this.vie++) {
-                this.hudList.get(this.vie).setHide(false);
+                this.vieList.get(this.vie).setHide(false);
             }
 
             this.setPosition(container.getWidth(), container.getHeight() / 2);
@@ -212,10 +212,8 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         if (this.isAlive() && !this.isEnAnimation()) {
             if (this.cooldownImmuniter.isDone() && this.cooldownInactif.isDone()) {
                 this.vie--;
-                if (this.moi) {
-                    this.hudList.get(this.vie).setHide(true);
-                    this.vitesse.y = 100.0f;
-                }
+                this.vieList.get(this.vie).setHide(true);
+                this.vitesse.y = 100.0f;
             }
 
             if (!this.isActive()) {
@@ -463,6 +461,11 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
     public long getTimeLeftCargaison() {
         return this.cooldownCargaison.getTimeLeft();
+    }
+
+    public void addVieList(Indicator ind) {
+        ind.setUuid(this.getUuid());
+        vieList.add(ind);
     }
 
     public void getComunicationInfo(ConcurrentLinkedQueue<Queue<Object>> concurrentLinkedQueueServer, Queue<UUID> ancienEntite, Queue<Object> nouveauAsteroide) {

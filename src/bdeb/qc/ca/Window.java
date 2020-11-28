@@ -167,7 +167,7 @@ public class Window extends BasicGame {
 
         this.vaisseau = new Vaisseau(vaisseauImgPath, container, this.exhaustBlueprint, this.projectileBlueprint,
                 this.cargaisonBlueprint, this.explosionBlueprint, this.asteroideBlueprint, this.projectilesLayer,
-                this.backgroundLayer, this.explosionsLayer, this.asteroidsLayer, this.hudLayer, sonExplosionVaisseau);
+                this.backgroundLayer, this.explosionsLayer, this.asteroidsLayer, sonExplosionVaisseau);
         this.vaisseau.setExhaustDist(-7, 45, 6, 45);
         this.vaisseau.setCollisionScale(0.75f);
 
@@ -184,8 +184,23 @@ public class Window extends BasicGame {
                     container.getHeight() - this.healthIndicatorBlueprint.getHeight() * 0.5f);
 
             for (int i = 0; i < this.vaisseau.vie; i++) {
-                this.hudLayer.add(this.healthIndicatorBlueprint.clone());
-                this.hudLayer.get(i).setPosition(pos.x, pos.y - (this.healthIndicatorBlueprint.getHeight() * i));
+                Indicator ind = this.healthIndicatorBlueprint.clone();
+                ind.setPosition(pos.x, pos.y - (this.healthIndicatorBlueprint.getHeight() * i));
+                this.hudLayer.add(ind);
+                this.vaisseau.vieList.add(ind);
+            }
+        }
+
+        {
+            Vector2f pos = new Vector2f(container.getWidth() - this.healthIndicatorBlueprint.getWidth() * 2.0f,
+                    container.getHeight() - this.healthIndicatorBlueprint.getHeight() * 0.5f);
+
+            for (int i = 0; i < this.vaisseau.vie; i++) {
+                Indicator ind = this.healthIndicatorBlueprint.clone();
+                ind.setPosition(pos.x, pos.y - (this.healthIndicatorBlueprint.getHeight() * i));
+                ind.setCouleur(new Color(0, 0, 255));
+                this.hudLayer.add(ind);
+                this.vaisseauB.vieList.add(ind);
             }
         }
 
