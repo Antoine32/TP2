@@ -362,10 +362,10 @@ public class Window extends BasicGame {
                 if (!communication) {
 
                     try {
+                        this.vaisseauxLayer.add(this.vaisseauB);
+
                         server = new Server(60606, queueVaisseauServer);
                         server.start();
-
-                        this.vaisseauxLayer.add(this.vaisseauB);
 
                         client = new Client(50505, address, queueVaisseauClient);
                         client.start();
@@ -380,10 +380,10 @@ public class Window extends BasicGame {
             case Input.KEY_EQUALS:
                 if (!communication) {
                     try {
+                        this.vaisseauxLayer.add(this.vaisseauB);
+
                         server = new Server(50505, queueVaisseauServer);
                         server.start();
-
-                        this.vaisseauxLayer.add(this.vaisseauB);
 
                         client = new Client(60606, address, queueVaisseauClient);
                         client.start();
