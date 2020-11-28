@@ -144,16 +144,22 @@ public class Window extends BasicGame {
 
         this.exhaustBlueprint = new Exhaust(0, 0, 23, 23, exhaustImgPath, 6);
 
-        this.healthIndicatorBlueprint = new Indicator(0, 0, 48, 30, healthIndicatorImgPath, 1, explosionBlueprint, this.explosionsLayer);
+        this.healthIndicatorBlueprint = new Indicator(0, 0, 48, 30, healthIndicatorImgPath, 1, explosionBlueprint,
+                this.explosionsLayer);
         this.healthIndicatorBlueprint.adaptSizeToWindow(container);
 
-        this.projectileBlueprint = new Projectile(0, 0, 10, 26, projectileImgPath, 3, 0, -1f, (float) container.getHeight() / 2.0f, this.explosionBlueprint, this.explosionsLayer, null, sonLaser);
-        this.cargaisonBlueprint = new Projectile(0, 0, 13, 13, particuleImgPath, 3, 1f, 0, (float) container.getWidth(), this.explosion2Blueprint, this.explosionsLayer, this.planet, sonCargaison);
+        this.projectileBlueprint = new Projectile(0, 0, 10, 26, projectileImgPath, 3, 0, -1f,
+                (float) container.getHeight() / 2.0f, this.explosionBlueprint, this.explosionsLayer, null, sonLaser);
+        this.cargaisonBlueprint = new Projectile(0, 0, 13, 13, particuleImgPath, 3, 1f, 0, (float) container.getWidth(),
+                this.explosion2Blueprint, this.explosionsLayer, this.planet, sonCargaison);
         this.cargaisonBlueprint.resize(52, 52);
 
-        this.asteroideBlueprint = new Asteroide(0, 0, 256, 256, asteroidImgPath, 4, this.explosionBlueprint, this.explosionsLayer, this.projectilesLayer, this.asteroidsLayer, this.nouveauAsteroide);
+        this.asteroideBlueprint = new Asteroide(0, 0, 256, 256, asteroidImgPath, 4, this.explosionBlueprint,
+                this.explosionsLayer, this.projectilesLayer, this.asteroidsLayer, this.nouveauAsteroide);
 
-        this.vaisseau = new Vaisseau(vaisseauImgPath, container, this.exhaustBlueprint, this.projectileBlueprint, this.cargaisonBlueprint, this.explosionBlueprint, this.asteroideBlueprint, this.projectilesLayer, this.backgroundLayer, this.explosionsLayer, this.asteroidsLayer, this.hudLayer, sonExplosionVaisseau);
+        this.vaisseau = new Vaisseau(vaisseauImgPath, container, this.exhaustBlueprint, this.projectileBlueprint,
+                this.cargaisonBlueprint, this.explosionBlueprint, this.asteroideBlueprint, this.projectilesLayer,
+                this.backgroundLayer, this.explosionsLayer, this.asteroidsLayer, this.hudLayer, sonExplosionVaisseau);
         this.vaisseau.setExhaustDist(-7, 45, 6, 45);
         this.vaisseau.setCollisionScale(0.75f);
 
@@ -166,7 +172,8 @@ public class Window extends BasicGame {
         this.vaisseauxLayer.add(this.vaisseau);
 
         {
-            Vector2f pos = new Vector2f(container.getWidth() - this.healthIndicatorBlueprint.getWidth() * 0.5f, container.getHeight() - this.healthIndicatorBlueprint.getHeight() * 0.5f);
+            Vector2f pos = new Vector2f(container.getWidth() - this.healthIndicatorBlueprint.getWidth() * 0.5f,
+                    container.getHeight() - this.healthIndicatorBlueprint.getHeight() * 0.5f);
 
             for (int i = 0; i < this.vaisseau.vie; i++) {
                 this.hudLayer.add(this.healthIndicatorBlueprint.clone());
@@ -204,19 +211,26 @@ public class Window extends BasicGame {
 
         if (this.vaisseau.isHide()) {
             String strDebutJeu = "Espace pour commencer";
-            this.trueTypeFontTitle.drawString((container.getWidth() - this.trueTypeFontTitle.getWidth(strDebutJeu)) * 0.5f, (container.getHeight() - this.trueTypeFontTitle.getHeight(strDebutJeu)) * 0.5f, strDebutJeu);
+            this.trueTypeFontTitle.drawString(
+                    (container.getWidth() - this.trueTypeFontTitle.getWidth(strDebutJeu)) * 0.5f,
+                    (container.getHeight() - this.trueTypeFontTitle.getHeight(strDebutJeu)) * 0.5f, strDebutJeu);
         }
 
         String strSurMars = "Quantité sur mars: " + this.planet.getQuantiterSurPlanete();
-        this.trueTypeFont.drawString(container.getWidth() * 0.99f - this.trueTypeFont.getWidth(strSurMars), 0, strSurMars);
+        this.trueTypeFont.drawString(container.getWidth() * 0.99f - this.trueTypeFont.getWidth(strSurMars), 0,
+                strSurMars);
 
-        String strDansVaisseau = "Quantité dans le vaisseau: " + this.vaisseau.getQuantiterDansVaisseau() + " / " + this.vaisseau.getCapaciter();
-        this.trueTypeFont.drawString(container.getWidth() * 0.99f - this.trueTypeFont.getWidth(strDansVaisseau), this.trueTypeFont.getLineHeight(), strDansVaisseau);
+        String strDansVaisseau = "Quantité dans le vaisseau: " + this.vaisseau.getQuantiterDansVaisseau() + " / "
+                + this.vaisseau.getCapaciter();
+        this.trueTypeFont.drawString(container.getWidth() * 0.99f - this.trueTypeFont.getWidth(strDansVaisseau),
+                this.trueTypeFont.getLineHeight(), strDansVaisseau);
 
-        String strTempsRestant = "Cooldown: " + this.decimalFormat.format((float) this.vaisseau.getTimeLeftCargaison() / 1000.0f) + "s";
+        String strTempsRestant = "Cooldown: "
+                + this.decimalFormat.format((float) this.vaisseau.getTimeLeftCargaison() / 1000.0f) + "s";
         this.trueTypeFont.drawString(0, 0, strTempsRestant);
 
-        String strProjectile = "Cooldown: " + this.decimalFormat.format((float) this.vaisseau.getTimeLeftProjectile() / 1000.0f) + "s";
+        String strProjectile = "Cooldown: "
+                + this.decimalFormat.format((float) this.vaisseau.getTimeLeftProjectile() / 1000.0f) + "s";
         this.trueTypeFont.drawString(0, this.trueTypeFont.getLineHeight(), strProjectile);
     }
 
@@ -232,7 +246,9 @@ public class Window extends BasicGame {
             if (playing) {
                 this.cooldownAsteroide.setDelaie(adapteCooldownToSize(1500));
                 Asteroide asteroide = asteroideBlueprint.clone().setNewRandom();
-                asteroide.setPosition(random.nextFloat() * (container.getWidth() - asteroide.getWidth()) + (asteroide.getWidth() / 2), -(asteroide.getHeight() / 2) + 1);
+                asteroide.setPosition(
+                        random.nextFloat() * (container.getWidth() - asteroide.getWidth()) + (asteroide.getWidth() / 2),
+                        -(asteroide.getHeight() / 2) + 1);
                 this.asteroidsLayer.add(asteroide);
 
                 if (communication) {
@@ -371,15 +387,26 @@ public class Window extends BasicGame {
     }
 
     public static void main(String[] args) throws SlickException {
+        int width = 1600;
+        int height = 900;
+        boolean fullscreen = false;
+
         if (args.length > 0) {
             address = args[0];
         }
 
-        boolean fullscreen = false;
         if (args.length > 1) {
+            width = Integer.parseInt(args[1]);
+        }
+
+        if (args.length > 2) {
+            height = Integer.parseInt(args[2]);
+        }
+
+        if (args.length > 3) {
             fullscreen = args[1].contentEquals("true");
         }
 
-        new AppGameContainer(new Window(), 1600, 900, fullscreen).start();
+        new AppGameContainer(new Window(), width, height, fullscreen).start();
     }
 }
