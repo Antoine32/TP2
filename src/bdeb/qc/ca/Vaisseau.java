@@ -526,7 +526,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
             while ((str = tab.poll()) != null) {
                 if (rajoute) {
                     Asteroide asteroide = asteroideBlueprint.clone();
-                    asteroide.setPosition(Float.parseFloat(tab.poll()) * scl, Float.parseFloat(tab.poll()) * scl);
+                    asteroide.setPosition(Float.parseFloat(str) * scl, Float.parseFloat(tab.poll()) * scl);
                     asteroide.setVitesse(Float.parseFloat(tab.poll()), Float.parseFloat(tab.poll()));
                     asteroide.setMultRotation(Float.parseFloat(tab.poll()));
                     asteroide.setScale(Float.parseFloat(tab.poll()));
