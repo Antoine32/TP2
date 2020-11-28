@@ -96,6 +96,8 @@ public class Window extends BasicGame {
     private boolean communication = false;
     private boolean communicationSlave = false;
 
+    public static String address = "127.0.0.1";
+
     private boolean playing = false;
 
     public Window() {
@@ -109,10 +111,10 @@ public class Window extends BasicGame {
         container.setVSync(true);
         container.setAlwaysRender(true);
 
-        queueVaisseauServer = new ConcurrentLinkedQueue<Queue<Float>>();
-        queueVaisseauClient = new ConcurrentLinkedQueue<Queue<Float>>();
+        this.queueVaisseauServer = new ConcurrentLinkedQueue<Queue<Float>>();
+        this.queueVaisseauClient = new ConcurrentLinkedQueue<Queue<Float>>();
 
-        nouveauAsteroide = new LinkedBlockingQueue<Float>();
+        this.nouveauAsteroide = new LinkedBlockingQueue<Float>();
 
         this.music = new Sound(musicSoundPath); // Je sais pas pourquoi il retourne une erreur, mais il fonctionne
         this.music.loop(1f, 0.5f);
@@ -154,11 +156,9 @@ public class Window extends BasicGame {
         this.vaisseau = new Vaisseau(vaisseauImgPath, container, this.exhaustBlueprint, this.projectileBlueprint, this.cargaisonBlueprint, this.explosionBlueprint, this.asteroideBlueprint, this.projectilesLayer, this.backgroundLayer, this.explosionsLayer, this.asteroidsLayer, this.hudLayer, sonExplosionVaisseau);
         this.vaisseau.setExhaustDist(-7, 45, 6, 45);
         this.vaisseau.setCollisionScale(0.75f);
-        this.vaisseau.setHide(true);
 
         this.vaisseauB = this.vaisseau.clone();
         this.vaisseauB.setCouleur(new Color(0, 0, 255));
-        this.vaisseauB.setHide(true);
 
         this.backgroundLayer.add(this.ciel);
         this.backgroundLayer.add(this.planet);
@@ -298,7 +298,7 @@ public class Window extends BasicGame {
             }
         } else {
             boolean notHiden = true;
-            
+
             for (Vaisseau vaisseau : vaisseauxLayer) {
                 notHiden = notHiden && !vaisseau.isHide();
             }
@@ -326,9 +326,8 @@ public class Window extends BasicGame {
                         server.start();
 
                         this.vaisseauxLayer.add(this.vaisseauB);
-                        this.vaisseauB.setHide(false);
 
-                        client = new Client(50505, queueVaisseauClient);
+                        client = new Client(50505, address, queueVaisseauClient);
                         client.start();
 
                         communication = true;
@@ -345,9 +344,8 @@ public class Window extends BasicGame {
                         server.start();
 
                         this.vaisseauxLayer.add(this.vaisseauB);
-                        this.vaisseauB.setHide(false);
 
-                        client = new Client(60606, queueVaisseauClient);
+                        client = new Client(60606, address, queueVaisseauClient);
                         client.start();
 
                         communication = true;
@@ -375,6 +373,10 @@ public class Window extends BasicGame {
     }
 
     public static void main(String[] args) throws SlickException {
+        if (args.length > 0) {
+            address = args[0];
+        }
+
         new AppGameContainer(new Window(), 900, 900, false).start();
     }
 }

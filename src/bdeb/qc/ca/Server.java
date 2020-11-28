@@ -1,10 +1,7 @@
 package bdeb.qc.ca;
 
-import org.newdawn.slick.geom.Vector2f;
-
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 

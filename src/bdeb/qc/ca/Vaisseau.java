@@ -156,6 +156,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         vaisseau.exhaust.setPosition(vaisseau.position);
 
         vaisseau.moi = false;
+        vaisseau.hide = true;
 
         vaisseau.controle = new Controle(null, vaisseau) {
             @Override
