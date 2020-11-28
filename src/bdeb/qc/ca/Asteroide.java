@@ -69,11 +69,12 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
 
         if (!this.isDetruire()) {
             for (Projectile projectile : projectilesList) {
-                if (!projectile.isDetruire() && projectile.isMoi() && projectile.detectCollision(this)) {
-                    this.setSplit(true);
-                    this.setDetruire(true);
-                    this.ancienEntite.add(this.getUuid());
-                    this.ancienEntite.add(projectile.getUuid());
+                if (!projectile.isDetruire() && projectile.detectCollision(this)) {
+                    if (projectile.isMoi()) {
+                        this.setSplit(true);
+                        this.setDetruire(true);
+                        this.ancienEntite.add(this.getUuid());
+                    }
                     projectile.setDetruire(true);
                     break;
                 }
@@ -106,6 +107,7 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
         nouveauAsteroide.add(this.getMultRotation());
         nouveauAsteroide.add(this.getScale());
         nouveauAsteroide.add(this.getFrame());
+        nouveauAsteroide.add(this.getUuid());
     }
 
     public boolean isSplit() {

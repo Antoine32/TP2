@@ -49,6 +49,10 @@ public class ComplexeEntitie extends Entite implements Cloneable {
     public UUID getUuid() {
         return this.uuid;
     }
+    
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
 
     public float getCollisionScale() {
         return collisionScale;

@@ -533,6 +533,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                     asteroide.setMultRotation(Float.parseFloat(tab.poll()));
                     asteroide.setScale(Float.parseFloat(tab.poll()));
                     asteroide.setFrame(Integer.parseInt(tab.poll()));
+                    asteroide.setUuid(UUID.fromString(tab.poll()));
                     this.asteroidesList.add(asteroide);
                 } else {
                     if (str.contentEquals("rajoute")) {
@@ -540,25 +541,12 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                     } else {
                         UUID uuid = UUID.fromString(str);
                         System.out.println("uuid recoie: " + uuid);
-                        boolean found = false;
 
                         for (Asteroide asteroide : asteroidesList) {
                             if (asteroide.getUuid().compareTo(uuid) == 0) {
                                 System.out.println("asteroide: " + uuid);
                                 asteroide.setDetruire(true);
-                                found = true;
                                 break;
-                            }
-                        }
-
-                        if (!found) {
-                            for (Projectile projectile : projectilesList) {
-                                if (projectile.getUuid().compareTo(uuid) == 0) {
-                                    System.out.println("projectile: " + uuid);
-                                    projectile.setDetruire(true);
-                                    found = true;
-                                    break;
-                                }
                             }
                         }
                     }
