@@ -267,7 +267,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
     }
 
     public void addToCargaison(Asteroide asteroide) {
-        int taille = (asteroide.getHeight() * asteroide.getWidth()) / 2;
+        int taille = (int) (asteroide.getScale() * 256f * asteroide.getScale() * 256f) / 2;
 
         if (this.isActive() && this.quantiterDansVaisseau + taille <= this.capaciter) {
             this.quantiterDansVaisseau += taille;
