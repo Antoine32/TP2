@@ -249,9 +249,7 @@ public class Window extends BasicGame {
             this.vaisseauB.setCouleur(new Color(0, 0, 255));
             this.vaisseauB.setComunicationInfo(queueVaisseauClient);
 
-            if (queueVaisseauServer.isEmpty()) {
-                this.vaisseau.getComunicationInfo(queueVaisseauServer, nouveauAsteroide);
-            }
+            this.vaisseau.getComunicationInfo(queueVaisseauServer, nouveauAsteroide);
         }
 
         for (ArrayList<Entite> entites : entitesLayers) {
