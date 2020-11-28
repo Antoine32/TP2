@@ -211,11 +211,9 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         if (this.isAlive() && !this.isEnAnimation()) {
             if (this.cooldownImmuniter.isDone() && this.cooldownInactif.isDone()) {
                 this.vie--;
-                this.hudList.get(this.vie).setHide(true);
-                this.vitesse.y = 100.0f;
-
-                if (this.vie == 0) {
-                    System.out.println("mort");
+                if (this.moi) {
+                    this.hudList.get(this.vie).setHide(true);
+                    this.vitesse.y = 100.0f;
                 }
             }
 
