@@ -295,13 +295,13 @@ public class Window extends BasicGame {
                 this.playing = false;
             }
         } else {
-            boolean notHiden = true;
+            boolean hiden = false;
 
             for (Vaisseau vaisseau : vaisseauxLayer) {
-                notHiden = notHiden && !vaisseau.isHide();
+                hiden = hiden || vaisseau.isHide();
             }
 
-            if (notHiden) {
+            if (!hiden) {
                 this.playing = true;
             }
         }
