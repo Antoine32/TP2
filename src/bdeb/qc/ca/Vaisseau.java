@@ -480,7 +480,9 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         this.asSent = false;
 
         while (!ancienEntite.isEmpty()) {
-            tab.add(ancienEntite.poll());
+            String uuid = ancienEntite.poll().toString();
+            System.out.println("uuid envoie: " + uuid);
+            tab.add(uuid);
         }
 
         tab.add("rajoute");
@@ -537,6 +539,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                         rajoute = true;
                     } else {
                         UUID uuid = UUID.fromString(str);
+                        System.out.println("uuid recoie: " + uuid);
                         boolean found = false;
 
                         for (Asteroide asteroide : asteroidesList) {
