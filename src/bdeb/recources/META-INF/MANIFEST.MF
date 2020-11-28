@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Main-Class: bdeb.qc.ca.Window
-
+Class-Path: ibxm.jar jinput.jar jnlp.jar jogg-0.0.7.jar rorbis-0.0.15.jar lwjgl.js lwjgl_util.jar lwjgl_util_applet.jar natives-linux.jar natives-mac.jar natives-windows.jar slick.jar slick-examples.jar tinylinepp.jar
+Specification-Version: "1.15"

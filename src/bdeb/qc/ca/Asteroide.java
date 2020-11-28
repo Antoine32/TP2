@@ -3,17 +3,19 @@ package bdeb.qc.ca;
 import org.newdawn.slick.GameContainer;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 import static bdeb.qc.ca.Window.random;
 
 public class Asteroide extends ComplexeEntitie implements Cloneable {
     protected ArrayList<Projectile> projectilesList;
     protected ArrayList<Asteroide> asteroideList;
+    protected Queue<Float> nouveauAsteroide;
 
     protected boolean split = false;
     protected float multRotation = 1f;
 
-    public Asteroide(float x, float y, int width, int height, String imgPath, int amountImg, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList, ArrayList<Projectile> projectilesList, ArrayList<Asteroide> asteroideList) {
+    public Asteroide(float x, float y, int width, int height, String imgPath, int amountImg, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList, ArrayList<Projectile> projectilesList, ArrayList<Asteroide> asteroideList, Queue<Float> nouveauAsteroide) {
         super(x, y, width, height, imgPath, amountImg, explosionBlueprint, explosionsList);
         this.setDeleteOnOutOfFrame(true);
         this.setVitesseMin(0.00f, 0.10f);
@@ -21,6 +23,7 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
 
         this.projectilesList = projectilesList;
         this.asteroideList = asteroideList;
+        this.nouveauAsteroide = nouveauAsteroide;
     }
 
     @Override
@@ -48,7 +51,6 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
         super.update(container, delta);
 
         this.rotation += this.multRotation * delta;
-        //this.getCurrentImage().setRotation(this.rotation);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
         if (!this.isDetruire()) {
             for (Projectile projectile : projectilesList) {
                 if (!projectile.isDetruire() && projectile.detectCollision(this)) {
-                    this.setSplit(true);
+                    this.setSplit(projectile.isMoi());
                     this.setDetruire(true);
                     projectile.setDetruire(true);
                     break;
@@ -71,23 +73,43 @@ public class Asteroide extends ComplexeEntitie implements Cloneable {
     public void lastAction() {
         if (this.isSplit() && Math.min(this.width, this.height) > 1) {
             Asteroide residue1 = this.clone().setNewRandom();
-            residue1.setPosition(residue1.getPositionX() + (residue1.getWidth() / 2), residue1.getPositionY());
+            residue1.setPosition(residue1.getPositionX() + (residue1.getWidth() / 2), Math.max(residue1.getPositionY(), 0));
             residue1.setScale(this.scale / 2f);
             this.asteroideList.add(residue1);
+            residue1.toNouveau();
 
             Asteroide residue2 = this.clone().setNewRandom();
-            residue2.setPosition(residue2.getPositionX() - (residue2.getWidth() / 2), residue2.getPositionY());
+            residue2.setPosition(residue2.getPositionX() - (residue2.getWidth() / 2), Math.max(residue2.getPositionY(), 0));
             residue2.setScale(this.scale / 2f);
             this.asteroideList.add(residue2);
+            residue2.toNouveau();
         }
+    }
+
+    public void toNouveau() {
+        nouveauAsteroide.add(this.getPositionX());
+        nouveauAsteroide.add(this.getPositionY());
+        nouveauAsteroide.add(this.getVitesseX());
+        nouveauAsteroide.add(this.getVitesseY());
+        nouveauAsteroide.add(this.getMultRotation());
+        nouveauAsteroide.add(this.getScale());
+        nouveauAsteroide.add((float) this.getFrame());
     }
 
     public boolean isSplit() {
         return split;
     }
 
+    public float getMultRotation() {
+        return multRotation;
+    }
+
     public void setSplit(boolean split) {
         this.split = split;
+    }
+
+    public void setMultRotation(float multRotation) {
+        this.multRotation = multRotation;
     }
 
 }

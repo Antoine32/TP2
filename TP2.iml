@@ -7,6 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="slick2dlib_2020" level="project" />
+    <orderEntry type="library" name="slick2dlib_2020" level="project" />
   </component>
 </module>

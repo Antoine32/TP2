@@ -24,7 +24,7 @@ public class Cooldown implements Cloneable {
     }
 
     public boolean isDone() {
-        if (this.getTimeLeft() == 0) {
+        if (this.getTimeLeft() == 0 && this.getDelaie() > -1) {
             this.lastAction = System.currentTimeMillis();
             return true;
         } else {

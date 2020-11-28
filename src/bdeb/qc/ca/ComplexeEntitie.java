@@ -8,6 +8,8 @@ public class ComplexeEntitie extends Entite implements Cloneable {
     protected Explosion explosionBlueprint;
     protected ArrayList<Explosion> explosionsList;
 
+    protected float collisionScale = 1f;
+
     public ComplexeEntitie(float x, float y, int width, int height, String imgPath, int amountImg, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList) {
         super(x, y, width, height, imgPath, amountImg);
         this.explosionBlueprint = explosionBlueprint;
@@ -22,7 +24,8 @@ public class ComplexeEntitie extends Entite implements Cloneable {
 
     public void triggerExplosion() {
         Explosion explosion = this.explosionBlueprint.clone();
-        explosion.resize((int) (this.getWidth() * this.getScale()), (int) (this.getWidth() * this.getScale()));
+        explosion.resize(this.getWidth(), this.getWidth());
+        explosion.setScale(this.getScale());
         explosion.setPosition(this.getPositionX(), this.getPositionY());
 
         this.explosionsList.add(explosion);
@@ -34,5 +37,13 @@ public class ComplexeEntitie extends Entite implements Cloneable {
         float minimumSquared = minimum * minimum;
 
         return distance.lengthSquared() < minimumSquared;
+    }
+
+    public float getCollisionScale() {
+        return collisionScale;
+    }
+
+    public void setCollisionScale(float collisionScale) {
+        this.collisionScale = collisionScale;
     }
 }

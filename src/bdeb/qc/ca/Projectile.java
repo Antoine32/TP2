@@ -1,6 +1,7 @@
 package bdeb.qc.ca;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
@@ -14,12 +15,18 @@ public class Projectile extends ComplexeEntitie implements Cloneable {
     protected Receiver receiver = null;
     protected int valeurTransmise = 0;
 
-    public Projectile(float x, float y, int width, int height, String imgPath, int amountImg, float vitX, float vitY, float distMaximal, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList, Receiver receiver) {
+    protected Sound sonDebut;
+
+    protected boolean moi = true;
+
+    public Projectile(float x, float y, int width, int height, String imgPath, int amountImg, float vitX, float vitY, float distMaximal, Explosion explosionBlueprint, ArrayList<Explosion> explosionsList, Receiver receiver, Sound sonDebut) {
         super(x, y, width, height, imgPath, amountImg, explosionBlueprint, explosionsList);
         this.setDeleteOnOutOfFrame(true);
         this.setVitesse(vitX, vitY);
         this.positionInitiale = new Vector2f(0, 0);
         this.distMaximal = distMaximal;
+
+        this.sonDebut = sonDebut;
 
         this.setReceiver(receiver);
     }
@@ -32,6 +39,10 @@ public class Projectile extends ComplexeEntitie implements Cloneable {
         return projectile;
     }
 
+    public void joueSonDebut() {
+        sonDebut.play(1f, 0.2f);
+    }
+
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
@@ -42,6 +53,10 @@ public class Projectile extends ComplexeEntitie implements Cloneable {
     public void setPosition(Vector2f position) {
         super.setPosition(position);
         this.setPositionInitiale(position.x, position.y);
+    }
+
+    public void setMoi(boolean moi) {
+        this.moi = moi;
     }
 
     public void setValeurTransmise(int valeurTransmise) {
@@ -78,6 +93,10 @@ public class Projectile extends ComplexeEntitie implements Cloneable {
 
     public Entite getLastTarget() {
         return lastTarget;
+    }
+
+    public boolean isMoi() {
+        return this.moi;
     }
 
     @Override

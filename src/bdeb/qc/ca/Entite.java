@@ -13,6 +13,7 @@ public abstract class Entite implements Cloneable {
     protected Vector2f acceleration;
     protected Vector2f decceleration;
     protected float rotation = 0;
+    protected Color couleur = new Color(255, 255, 255);
 
     protected float scale = 1f;
     protected float adapt = 1f / scale;
@@ -27,8 +28,6 @@ public abstract class Entite implements Cloneable {
     protected boolean detruire;
 
     protected boolean hide;
-
-    protected float collisionScale = 1f;
 
     public Entite(float x, float y, int width, int height, String imgPath, int amountImg) {
         this.position = new Vector2f(x, y);
@@ -90,11 +89,12 @@ public abstract class Entite implements Cloneable {
 
     public void display(Graphics g) {
         g.pushTransform();
+        g.setColor(couleur);
         g.scale(scale, scale);
         g.translate(this.position.x * adapt - (this.width / 2), this.position.y * adapt - (this.height / 2));
-        g.drawOval(0, 0, this.width, this.width);
+        //g.drawOval(0, 0, this.width, this.width);
         g.rotate(this.width / 2, this.height / 2, this.rotation);
-        g.drawImage(this.getCurrentImage(), 0, 0);
+        g.drawImage(this.getCurrentImage(), 0, 0, this.couleur);
         g.popTransform();
     }
 
@@ -183,8 +183,8 @@ public abstract class Entite implements Cloneable {
         return this.decceleration.getY();
     }
 
-    public float getCollisionScale() {
-        return collisionScale;
+    public Color getCouleur() {
+        return couleur;
     }
 
     public int getWidth() { // Largeur de l’entite
@@ -230,8 +230,8 @@ public abstract class Entite implements Cloneable {
         this.hide = hide;
     }
 
-    public void setCollisionScale(float collisionScale) {
-        this.collisionScale = collisionScale;
+    public void setCouleur(Color couleur) {
+        this.couleur = couleur;
     }
 
     public void setPosition(float x, float y) {

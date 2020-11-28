@@ -67,12 +67,6 @@ public class Planet extends Entite implements Cloneable, Receiver {
         super.update(container, delta);
 
         this.rotation -= delta / 500f;
-
-        for (int i = 0; i < this.mainImage.length; i++) {
-            for (int j = 0; j < this.mainImage[i].length; j++) {
-                //this.mainImage[i][j].setRotation(this.rotation);
-            }
-        }
     }
 
     public int getQuantiterSurPlanete() {
@@ -108,8 +102,6 @@ public class Planet extends Entite implements Cloneable, Receiver {
                     break;
                 }
             }
-
-            System.gc();
         }
     }
 }

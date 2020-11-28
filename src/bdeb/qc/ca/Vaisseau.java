@@ -1,20 +1,24 @@
 package bdeb.qc.ca;
 
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
+import org.lwjgl.input.Mouse;
+import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import static bdeb.qc.ca.Window.constrain;
+import static bdeb.qc.ca.Window.*;
 
 public class Vaisseau extends ComplexeEntitie implements Cloneable {
     protected Projectile projectileBLueprint;
     protected Projectile cargaisonBLueprint;
+    protected Asteroide asteroideBlueprint;
 
     protected ArrayList<Projectile> projectilesList;
-    protected ArrayList<Entite> cargaisonsList;
+    protected ArrayList<Entite> backgroundList;
     protected ArrayList<Asteroide> asteroidesList;
     protected ArrayList<Entite> hudList;
 
@@ -32,29 +36,94 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
     protected boolean enAnimation = false;
 
-    public Vaisseau(String imgPath, Exhaust exhaust, Projectile projectileBLueprint, Projectile cargaisonBLueprint, Explosion explosionBlueprint, ArrayList<Projectile> projectilesList, ArrayList<Entite> cargaisonsList, ArrayList<Explosion> explosionsList, ArrayList<Asteroide> asteroidesList, ArrayList<Entite> hudList) {
+    protected Sound sonExplose;
+
+    protected Controle controle;
+
+    protected boolean asShot = false;
+    protected boolean asSent = false;
+
+    protected boolean moi = true;
+
+    public Vaisseau(String imgPath, GameContainer container, Exhaust exhaust, Projectile projectileBLueprint, Projectile cargaisonBLueprint, Explosion explosionBlueprint, Asteroide asteroideBlueprint, ArrayList<Projectile> projectilesList, ArrayList<Entite> backgroundList, ArrayList<Explosion> explosionsList, ArrayList<Asteroide> asteroidesList, ArrayList<Entite> hudList, Sound sonExplose) {
         super(0, 0, 128, 128, imgPath, 5, explosionBlueprint, explosionsList);
-        this.setVitesseMax(0.5f, 0.5f);
-        this.setAcceleration(0.002f, 0.002f);
+
+        this.hide = true;
+
+        this.setVitesseMax(1f, 1f);
+        this.setAcceleration(0.004f, 0.004f);
         this.setDecceleration(this.getAccelerationX() * 0.35f, this.getAccelerationY() * 0.25f);
 
         this.projectilesList = projectilesList;
-        this.cargaisonsList = cargaisonsList;
+        this.backgroundList = backgroundList;
         this.asteroidesList = asteroidesList;
         this.hudList = hudList;
 
-        this.cooldownProjectile = new Cooldown(250);
+        this.cooldownProjectile = new Cooldown(333);
         this.cooldownCargaison = new Cooldown(10000);
-        this.cooldownInactif = new Cooldown(1000);
-        this.cooldownImmuniter = new Cooldown(2000);
+        this.cooldownInactif = new Cooldown(250);
+        this.cooldownImmuniter = new Cooldown(1000);
 
         this.exhaust = exhaust.clone();
         this.exhaust.linkPosition(this.position);
 
         this.projectileBLueprint = projectileBLueprint;
         this.cargaisonBLueprint = cargaisonBLueprint;
+        this.asteroideBlueprint = asteroideBlueprint;
 
-        this.hide = true;
+        this.sonExplose = sonExplose;
+
+        this.controle = new Controle(container, this) {
+            @Override
+            boolean Up(float delta) {
+                boolean clavier = !controleSouris && (Keyboard.isKeyDown(Input.KEY_W) || Keyboard.isKeyDown(Input.KEY_UP));
+
+                boolean faireY = controleSouris && !stopPourEtreY(container.getHeight() - Mouse.getY(), delta);
+                boolean sourie = faireY && ((container.getHeight() - Mouse.getY()) - entite.getPositionY()) < -1;
+
+                return clavier || sourie;
+            }
+
+            @Override
+            boolean Down(float delta) {
+                boolean clavier = !controleSouris && (Keyboard.isKeyDown(Input.KEY_S) || Keyboard.isKeyDown(Input.KEY_DOWN));
+
+                boolean faireY = controleSouris && !stopPourEtreY(container.getHeight() - Mouse.getY(), delta);
+                boolean sourie = faireY && ((container.getHeight() - Mouse.getY()) - entite.getPositionY()) > 1;
+
+                return clavier || sourie;
+            }
+
+            @Override
+            boolean Right(float delta) {
+                boolean clavier = !controleSouris && (Keyboard.isKeyDown(Input.KEY_D) || Keyboard.isKeyDown(Input.KEY_RIGHT));
+
+                boolean faireX = controleSouris && !stopPourEtreX(Mouse.getX(), delta);
+                boolean sourie = faireX && (Mouse.getX() - entite.getPositionX()) > 1;
+
+                return clavier || sourie;
+            }
+
+            @Override
+            boolean Left(float delta) {
+                boolean clavier = !controleSouris && (Keyboard.isKeyDown(Input.KEY_A) || Keyboard.isKeyDown(Input.KEY_LEFT));
+
+                boolean faireX = controleSouris && !stopPourEtreX(Mouse.getX(), delta);
+                boolean sourie = faireX && (Mouse.getX() - entite.getPositionX()) < -1;
+
+                return clavier || sourie;
+            }
+
+            @Override
+            boolean Trigger() {
+                return Keyboard.isKeyDown(Input.KEY_SPACE) || Mouse.isButtonDown(Input.MOUSE_LEFT_BUTTON);
+            }
+
+            @Override
+            boolean Send() {
+                return Keyboard.isKeyDown(Input.KEY_E) || Mouse.isButtonDown(Input.MOUSE_RIGHT_BUTTON);
+            }
+        };
     }
 
     public void reset(GameContainer container) {
@@ -85,6 +154,40 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
         vaisseau.exhaust = this.exhaust.clone();
         vaisseau.exhaust.setPosition(vaisseau.position);
+
+        vaisseau.moi = false;
+
+        vaisseau.controle = new Controle(null, vaisseau) {
+            @Override
+            boolean Up(float delta) {
+                return false;
+            }
+
+            @Override
+            boolean Down(float delta) {
+                return false;
+            }
+
+            @Override
+            boolean Right(float delta) {
+                return false;
+            }
+
+            @Override
+            boolean Left(float delta) {
+                return false;
+            }
+
+            @Override
+            boolean Trigger() {
+                return false;
+            }
+
+            @Override
+            boolean Send() {
+                return false;
+            }
+        };
 
         return vaisseau;
     }
@@ -141,7 +244,10 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
             Projectile newProjectile = this.projectileBLueprint.clone();
             newProjectile.setPosition(this.getPositionX(), this.getPositionY() - (this.getHeight() / 2) * scale);
             newProjectile.setScale(this.scale);
+            newProjectile.joueSonDebut();
+            newProjectile.setMoi(this.moi);
             this.projectilesList.add(newProjectile);
+            asShot = true;
         }
     }
 
@@ -153,7 +259,9 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
             newCargaison.setScale((float) Math.sqrt(this.getQuantiterDansVaisseau()) / (float) Math.sqrt(this.getCapaciter()));
             this.quantiterDansVaisseau = 0;
 
-            this.cargaisonsList.add(newCargaison);
+            newCargaison.joueSonDebut();
+            this.backgroundList.add(newCargaison);
+            asSent = true;
         }
     }
 
@@ -162,19 +270,25 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
 
         if (this.isActive() && this.quantiterDansVaisseau + taille <= this.capaciter) {
             this.quantiterDansVaisseau += taille;
+
+            Asteroide asteroideResidue = asteroide.clone();
+            asteroideResidue.setScale(asteroideResidue.getScale() / 2);
+            asteroideResidue.setPosition(this.getPositionX(), this.getPositionY() + this.getHeight() / 2);
+            asteroideResidue.setCouleur(new Color(55, 55, 55));
+            asteroideResidue.setVitesse(0, asteroideResidue.getVitesseMaxY());
+            asteroideResidue.setMultRotation(1);
+            backgroundList.add(asteroideResidue);
+
             asteroide.setDetruire(true);
         }
     }
 
     @Override
     public void display(Graphics g) {
+        super.display(g);
+
         if (this.isActive()) {
-            super.display(g);
             this.exhaust.display(g);
-        } else {
-            this.getCurrentImage().setImageColor(255, 0, 0);
-            super.display(g);
-            this.getCurrentImage().setImageColor(255, 255, 255);
         }
     }
 
@@ -182,15 +296,13 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
     public void updateFirst(GameContainer container, float delta) {
         super.updateFirst(container, delta);
 
+        this.controle.update(delta);
+
         if (!this.enAnimation) {
-            final boolean UP = Keyboard.isKeyDown(Input.KEY_W) || Keyboard.isKeyDown(Input.KEY_UP);
-            final boolean DOWN = Keyboard.isKeyDown(Input.KEY_S) || Keyboard.isKeyDown(Input.KEY_DOWN);
-            final boolean RIGHT = Keyboard.isKeyDown(Input.KEY_D) || Keyboard.isKeyDown(Input.KEY_RIGHT);
-            final boolean LEFT = Keyboard.isKeyDown(Input.KEY_A) || Keyboard.isKeyDown(Input.KEY_LEFT);
 
             if (this.isActive()) {
-                if (UP ^ DOWN) {
-                    if (UP) {
+                if (this.controle.isUp() ^ this.controle.isDown()) {
+                    if (this.controle.isUp()) {
                         this.vitesse.y -= delta * this.getAccelerationY();
                     } else {
                         this.vitesse.y += delta * this.getAccelerationY();
@@ -204,8 +316,8 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                 }
             }
 
-            if (RIGHT ^ LEFT && this.isAlive()) {
-                if (LEFT) {
+            if (this.controle.isRight() ^ this.controle.isLeft() && this.isAlive()) {
+                if (this.controle.isLeft()) {
                     this.vitesse.x -= delta * this.getAccelerationX();
                 } else {
                     this.vitesse.x += delta * this.getAccelerationX();
@@ -230,11 +342,11 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         this.position.y = constrain(this.position.y, 0, container.getHeight());
 
         if (this.isAlive()) {
-            if (Keyboard.isKeyDown(Input.KEY_SPACE)) {
+            if (controle.isTrigger()) {
                 this.lauchProjectile();
             }
 
-            if (Keyboard.isKeyDown(Input.KEY_E)) {
+            if (controle.isSend()) {
                 this.lauchCargaison();
             }
         }
@@ -277,7 +389,7 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
                     if ((asteroide.getPositionY() + (asteroide.getHeight() / 4)) <= (this.getPositionY() - (this.getHeight() / 4))) {
                         this.addToCargaison((Asteroide) asteroide);
                     }
-                } else {
+                } else if (this.moi) {
                     this.perdVie();
                 }
             }
@@ -288,20 +400,40 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         }
 
         if (this.enAnimation) {
-            float t = (this.getPositionX() - (container.getWidth() / 2)) / (-this.getVitesseX() / 2f);
-            float v = this.getVitesseX() + this.getDeccelerationX() * t;
-
             this.setScale(1f - ((this.getPositionX() - (container.getWidth() / 2)) / (container.getWidth() / 2)));
 
-            if (v <= 0) {
+            if (stopPourEtreX(container.getWidth() / 2, delta) || this.getVitesseX() > -this.getVitesseMaxX()) {
                 this.vitesse.x = Math.min(this.vitesse.x + delta * this.getDeccelerationX(), 0.0f);
 
                 if (this.getVitesseX() >= 0) {
+                    System.out.println(getPositionX());
                     this.enAnimation = false;
                     this.setScale(1f);
                 }
             }
         }
+
+        if (isActive() && this.couleur.g != this.couleur.r) {
+            this.couleur = new Color(255, 255, 255);
+        } else if (!isActive() && this.couleur.g == this.couleur.r) {
+            this.couleur = new Color(255, 0, 0);
+        }
+    }
+
+    public boolean stopPourEtre(float destination, float position, float vitesse, float decceleration, float delta) {
+        float t = Math.abs(position - destination) / Math.abs(vitesse * delta / 2f);
+        float v = Math.abs(vitesse) - Math.abs(decceleration * t * delta);
+        float p = Math.abs(position - destination) - Math.abs(vitesse * t * delta) + Math.abs((decceleration / 2f) * t * t * delta * delta);
+
+        return p <= 0 || v >= 0;
+    }
+
+    public boolean stopPourEtreX(float x, float delta) {
+        return this.getVitesseX() != 0 && stopPourEtre(x, this.getPositionX(), this.getVitesseX(), this.getDeccelerationX(), delta);
+    }
+
+    public boolean stopPourEtreY(float y, float delta) {
+        return this.getVitesseY() != 0 && stopPourEtre(y, this.getPositionY(), this.getVitesseY(), this.getDeccelerationY(), delta);
     }
 
     @Override
@@ -326,9 +458,95 @@ public class Vaisseau extends ComplexeEntitie implements Cloneable {
         return this.cooldownCargaison.getTimeLeft();
     }
 
+    public void getComunicationInfo(ConcurrentLinkedQueue<Queue<Float>> concurrentLinkedQueueServer, Queue<Float> nouveauAsteroide) {
+        Queue<Float> tab = new LinkedBlockingQueue<>();
+        tab.add(this.getPositionX());
+        tab.add(this.getPositionY());
+
+        tab.add(this.getVitesseX());
+        tab.add(this.getVitesseY());
+
+        tab.add(this.getScale());
+
+        tab.add(this.isHide() ? 1f : 0f);
+
+        tab.add(this.asShot ? 1f : 0f);
+        tab.add(this.asSent ? 1f : 0f);
+
+        this.asShot = false;
+        this.asSent = false;
+
+        while (!nouveauAsteroide.isEmpty()) {
+            tab.add(nouveauAsteroide.poll());
+        }
+
+        concurrentLinkedQueueServer.add(tab);
+    }
+
+    public void setComunicationInfo(ConcurrentLinkedQueue<Queue<Float>> concurrentLinkedQueueClient) {
+        Queue<Float> tab = concurrentLinkedQueueClient.poll();
+
+        if (tab != null) {
+            this.setPosition(tab.poll(), tab.poll());
+
+            this.setVitesse(tab.poll(), tab.poll());
+
+            this.setScale(tab.poll());
+
+            boolean hide = tab.poll() == 1f;
+
+            if (hide && !this.isHide()) {
+                this.setHide(true);
+            } else if (!hide && this.isHide()) {
+                this.setHide(false);
+            }
+
+            if (tab.poll() == 1f) {
+                this.cooldownProjectile.setDoneTrue();
+                this.lauchProjectile();
+            }
+
+            if (tab.poll() == 1f) {
+                this.cooldownCargaison.setDoneTrue();
+                this.lauchCargaison();
+            }
+
+            while (!tab.isEmpty()) {
+                Asteroide asteroide = asteroideBlueprint.clone();
+                asteroide.setPosition(tab.poll(), tab.poll());
+                asteroide.setVitesse(tab.poll(), tab.poll());
+                asteroide.setMultRotation(tab.poll());
+                asteroide.setScale(tab.poll());
+                asteroide.setFrame((int) (tab.poll() + 0));
+                this.asteroidesList.add(asteroide);
+            }
+        }
+    }
+
     @Override
     public void lastAction() {
         this.triggerExplosion();
+        this.sonExplose.play(1f, 0.2f);
+
+        int quantiterEnlever = 16 * 16;
+        float decal = 0;
+
+        while (this.quantiterDansVaisseau > 0) {
+            quantiterEnlever = Math.min(quantiterEnlever, this.quantiterDansVaisseau);
+
+            Asteroide asteroideResidue = asteroideBlueprint.clone();
+            asteroideResidue.setScale((float) Math.sqrt(quantiterEnlever) / (float) asteroideResidue.getWidth());
+            asteroideResidue.setPosition(this.getPositionX() + random.nextFloat() * (this.getWidth() - decal) - ((this.getWidth() - decal) / 2f), this.getPositionY() + decal);
+            asteroideResidue.setCouleur(new Color(55, 55, 55));
+            asteroideResidue.setVitesse(0, asteroideResidue.getVitesseMaxY() + decal);
+            asteroideResidue.setMultRotation(1);
+            backgroundList.add(asteroideResidue);
+
+            System.out.println(quantiterDansVaisseau);
+            decal = Math.min(decal + this.getVitesseMaxY(), this.getWidth());
+
+            this.quantiterDansVaisseau -= quantiterEnlever;
+        }
 
         this.quantiterDansVaisseau = 0;
         this.cooldownInactif.setDoneTrue();
